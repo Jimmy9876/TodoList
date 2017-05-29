@@ -1,11 +1,15 @@
 <template>
   <div class="hello">
     <h1 v-text="title"></h1>
-      <ul>
-        <li v-for="item in items" v-bind:class="{finished: item.isFinished}">
+    <input v-model="newItem" @keyup.enter="addNew">
+    <!--<h3>the todolist</h3>-->
+    <div>
+        <ul>
+        <li v-for="item in items" v-bind:class="{finished: item.isFinished}" v-on:click="toggleFinish(item)">
           {{ item.label }}
         </li>
       </ul>
+    </div> 
   </div>
 </template>
 
@@ -15,16 +19,20 @@ export default {
     return {
       title: 'This is a todolist.',
       items: [
-        {
-          label: 'coding',
-          isFinished: false
-        },
-        {
-          label: 'walking',
-          isFinished: true
-        }
       ],
-      liClass: 'ThisisliClass'
+      newItem: ''
+    }
+  },
+  methods: {
+    toggleFinish: function (item) {
+      item.isFinished = !item.isFinished
+    },
+    addNew: function () {
+      this.items.push({
+        label: this.newItem,
+        isFinished: false
+      })
+      this.newItem = ''
     }
   }
 }
@@ -40,13 +48,14 @@ h1, h2 {
 }
 
 ul {
-  list-style-type: none;
-  padding: 0;
+  /*list-style-type: none;*/
+  /*margin-top: 0px;*/
+  padding: 200px;
 }
 
 li {
-  display: inline-block;
-  margin: 0 10px;
+  /*display: inline-block;*/
+  /*margin: 0 10px;*/
 }
 
 a {
