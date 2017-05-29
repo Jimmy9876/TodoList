@@ -1,26 +1,29 @@
 <template>
-  <div class="hello">
-    <h1 v-text="title"></h1>
-    <input v-model="newItem" @keyup.enter="addNew">
-    <!--<h3>the todolist</h3>-->
-    <div>
-        <ul>
-        <li v-for="item in items" v-bind:class="{finished: item.isFinished}" v-on:click="toggleFinish(item)">
-          {{ item.label }}
-        </li>
-      </ul>
-    </div> 
+  <div id="app">
+    <h1 v-html="title"></h1>
+    <input v-model="newItem" v-on:keyup.enter="addNew"></input>
+    <ul>
+      <li v-for="item in items" v-bind:class="{finished:item.isFinished}" v-on:click="toggleFinish(item)">{{item.label}}</li>
+    </ul>
   </div>
 </template>
 
 <script>
+import Store from './store'
 export default {
-  data () {
+  data: function () {
     return {
-      title: 'This is a todolist.',
-      items: [
-      ],
+      title: 'This Is A Todolist',
+      items: Store.fetch(),
       newItem: ''
+    }
+  },
+  watch: {
+    items: {
+      handler: function (items) {
+        Store.save(items)
+      },
+      deep: true
     }
   },
   methods: {
@@ -38,27 +41,32 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.finished{
+<style>
+.finished {
   text-decoration: underline;
-}
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  /*list-style-type: none;*/
-  /*margin-top: 0px;*/
-  padding: 200px;
 }
 
 li {
-  /*display: inline-block;*/
-  /*margin: 0 10px;*/
+  list-style: none;
+  font-size: 1.6em;
+  margin-top: 10px;
 }
 
-a {
-  color: #42b983;
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+
+input {
+  width: 230px;
+  height: 40px;
+  border-radius: 20px;
+  padding: 0.4em 0.35em;
+  border: 3px solid #CFCFCF;
+  font-size: 1.55em;
 }
 </style>
